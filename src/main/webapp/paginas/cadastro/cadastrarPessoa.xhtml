@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/paginas/template_master/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">
+		Cadastrar Pessoa
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+			<p:messages id="msgs" severity="error"/>
+			<p:fieldset legend="Cadastrar Pessoa">
+				<h:panelGrid columns="8" cellpadding="5" id="panel">
+
+					<h:outputLabel value="Nome:" />
+					<p:inputText style="width:240px;" value="#{pessoaBean.pessoa.nome}" required="true" maxlength="100" label="Nome"/>
+
+					<h:outputLabel value="Apelido:" />
+					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.apelido}" maxlength="100"/>
+
+					<h:outputLabel value="Telefone:" />
+					<p:inputMask mask="(99)99999-9999"
+						value="#{pessoaBean.pessoa.telefone}" required="true" label="Telefone"/>
+
+
+					<h:outputLabel value="CPF:" />
+					<p:inputMask mask="999.999.999-99" value="#{pessoaBean.pessoa.cpf}"/>
+						
+					<h:outputLabel value="Rua:" />
+					<p:inputText style="width:240px;" value="#{pessoaBean.pessoa.rua}" required="true" maxlength="230" label="Rua"/>
+					
+					<h:outputLabel value="Bairro:" />
+					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.bairro}" required="true" maxlength="230" label="Bairro"/>
+					
+					<h:outputLabel value="Nºda Casa" />
+					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.ncasa}" required="true" maxlength="10" label="Nº da casa"/>
+
+					<h:outputLabel value="Estado:" />
+					<p:selectOneMenu value="#{pessoaBean.estado}" converter="conversorCombo" required="true" label="Estado">
+						<f:selectItems value="#{pessoaBean.estadosSI}"/>
+						<p:ajax event="change" listener="#{pessoaBean.carregarCidades(pessoaBean.estado)}" update="selectCidade"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Cidade:"/>
+					<p:selectOneMenu value="#{pessoaBean.pessoa.cidade}" id="selectCidade"  converter="conversorCombo" required="true" label="Cidade">
+						<f:selectItems value="#{pessoaBean.cidadesSI}"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="Tipo de Cadastro:"/>
+					<p:selectOneMenu value="#{pessoaBean.pessoa.tipoPessoa}" converter="conversorCombo" required="true">
+						<f:selectItem itemValue="C" itemLabel="Cliente"/>
+						<f:selectItem itemValue="V" itemLabel="Vendedor"/>
+					</p:selectOneMenu>
+					
+				</h:panelGrid>
+					<p:commandButton action="#{pessoaBean.cadastrar(pessoaBean.pessoa)}" ajax="true" icon="ui-icon-check" value="Salvar" update="msgs" style="float:right"/>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

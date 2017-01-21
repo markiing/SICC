@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<f:view contentType="text/html; charset=UTF-8"/>
+
+	<h:head>
+		<!-- INSERÇÃO DO TÍTULO -->
+		<title><ui:insert name="titulo"/>
+		</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8; text/html; charset=UTF-8" />
+		
+		<!-- DOCUMENTOS DE ESTILO -->
+		<h:outputStylesheet library="css" name="header.css"/>
+		<h:outputStylesheet library="css" name="content.css"/>
+		<h:outputStylesheet library="css" name="footer.css"/>
+		<h:outputStylesheet library="css" name="Util.css"/>
+	</h:head>
+	
+	<h:body>
+	
+	<!-- MODAL DE MENSAGENS -->
+	<p:growl autoUpdate="true" id="messages" showDetail="true" severity="info, warn"/>
+	<p:outputPanel autoUpdate="true">
+		<p:dialog header="Mensagem" id="dialogMensagemID" modal="true" resizable="false" showEffect="scale" visible="false" 
+		widgetVar="dialogMensagem" width="true" closeOnEscape="true">
+		<p:messages showDetail="true" autoUpdate="true"/>
+		</p:dialog>
+	</p:outputPanel>
+	
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <p:graphicImage name="/img/ajax-loader.gif" style="visibility: visible;" />
+	</p:dialog>
+	
+	<p:ajaxStatus onstart="PF('statusDialog').show(); $('body').css('cursor', 'wait');" 
+			oncomplete="PF('statusDialog').hide(); $('body').css('cursor', 'default');" />
+	
+	<!-- DIALOG DE CONFIRMAÇÃO -->
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	</p:confirmDialog>
+	
+	<!-- HEADER -->
+	<ui:include src="/paginas/template_master/header.xhtml" />
+	
+	<!-- MENU -->
+	<ui:include src="/paginas/template_master/menu.xhtml"/>
+	
+	<!-- CONTEÚDO DAS PÁGINAS -->
+	<div class="content">
+		<ui:insert name="content"/>
+	</div>
+	<!-- FOOTER -->
+	<ui:include src="/paginas/template_master/footer.xhtml" />
+	</h:body>
+</html>

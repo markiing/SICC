@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/paginas/template_master/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">
+		Gerenciar Cadastros
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+		<p:messages id="msgs" severity="error"/>
+			<div class="table" style="overflow: scroll; height: 500px;">
+				<p:dataTable id="basicDT" var="pessoa" selectionMode="single"
+					rowStyleClass="#{pessoa.ativo == true ? '':'search-people-data-table-inactive	'}"
+					selection="#{pessoaBean.pessoa}" rowKey="#{pessoa.codigo}" filteredValue="#{pessoaBean.listPessoasFiltradas}"
+					value="#{pessoaBean.listPessoas}" rowIndexVar="var">
+					<f:facet name="header">
+	            Pessoas Cadastradas
+	        </f:facet>
+					<p:ajax event="rowDblselect"
+						listener="#{pessoaBean.confPessoa(pessoaBean.pessoa)}"
+						update="@form" oncomplete="PF('pessoaDialog').show()" />
+					<p:column width="20">
+						<h:outputText value="#{pessoa.codigo}" />
+					</p:column>
+					<p:column headerText="Nome" filterBy="#{pessoa.nome}" width="300">
+						<h:outputText value="#{pessoa.nome}" />
+					</p:column>
+					<p:column headerText="CPF" width="160" filterBy="#{pessoa.cpf}">
+						<h:outputText value="#{pessoa.cpf}"/>
+					</p:column>
+					<p:column headerText="Telefone" filterBy="#{pessoa.telefone}"
+						width="130">
+						<h:outputText value="#{pessoa.telefone}" />
+					</p:column>
+					<p:column headerText="Rua" filterBy="#{pessoa.rua}">
+						<h:outputText value="#{pessoa.rua}" />
+					</p:column>
+					<p:column headerText="Bairro" filterBy="#{pessoa.bairro}">
+						<h:outputText value="#{pessoa.bairro}" />
+					</p:column>
+					<p:column headerText="Tipo" filterBy="#{pessoa.tipoPessoa}"
+						width="110">
+						<h:outputText
+							value="#{pessoa.tipoPessoa == 'C' ? 'CLIENTE' : 'VENDEDOR'}" />
+					</p:column>
+					<p:column styleClass="cellTest" headerText="Status" width="90">
+						<p:inputSwitch value="#{pessoa.ativo}" onLabel="Atv" offLabel="Des">
+							<p:ajax listener="#{pessoaBean.atualizarDados(pessoa)}" update="@form">
+								<f:setPropertyActionListener value="#{pessoa}" target="#{pessoaBean.pessoa}" />
+							</p:ajax>
+						</p:inputSwitch>
+					</p:column>
+				</p:dataTable>
+			</div>
+
+			<p:dialog header="Editar Cadastros" widgetVar="pessoaDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="pessoaDetalhes" style="text-align:center;">
+					<p:panelGrid columns="4" columnClasses="label,value">
+
+						<h:outputLabel value="Nome:" />
+						<p:inputText value="#{pessoaBean.pessoa.nome}" required="true"
+							maxlength="100" />
+
+						<h:outputLabel value="Apelido:" />
+						<p:inputText value="#{pessoaBean.pessoa.apelido}" maxlength="100" />
+
+
+						<h:outputLabel value="Telefone:" />
+						<p:inputMask mask="(99)99999-9999"
+							value="#{pessoaBean.pessoa.telefone}" required="true"></p:inputMask>
+
+
+						<h:outputLabel value="CPF:" />
+						<p:inputMask mask="999.999.999-99"
+							value="#{pessoaBean.pessoa.cpf}"></p:inputMask>
+
+						<h:outputLabel value="Rua:" />
+						<p:inputText value="#{pessoaBean.pessoa.rua}" required="true"
+							maxlength="230" />
+
+						<h:outputLabel value="Bairro:" />
+						<p:inputText value="#{pessoaBean.pessoa.bairro}" required="true"
+							maxlength="230" />
+
+						<h:outputLabel value="Nºda Casa" />
+						<p:inputText value="#{pessoaBean.pessoa.ncasa}" required="true"
+							maxlength="10" />
+					</p:panelGrid>
+					<p:spacer height="15" />
+
+					<div class="buttons-edit">
+						<p:commandButton style="float:right; height:50px;"
+							value="Confirmar Dados" icon="ui-icon-check"
+							action="#{pessoaBean.atualizarDados(pessoaBean.pessoa)}"
+							oncomplete="PF('pessoaDialog').hide()" update="basicDT msgs" />
+					</div>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
