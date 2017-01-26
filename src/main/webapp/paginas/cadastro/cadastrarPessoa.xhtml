@@ -16,49 +16,55 @@
 		<h:form>
 			<p:messages id="msgs" severity="error"/>
 			<p:fieldset legend="Cadastrar Pessoa">
-				<h:panelGrid columns="8" cellpadding="5" id="panel">
-
-					<h:outputLabel value="Nome:" />
-					<p:inputText style="width:240px;" value="#{pessoaBean.pessoa.nome}" required="true" maxlength="100" label="Nome"/>
-
-					<h:outputLabel value="Apelido:" />
-					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.apelido}" maxlength="100"/>
-
-					<h:outputLabel value="Telefone:" />
-					<p:inputMask mask="(99)99999-9999"
-						value="#{pessoaBean.pessoa.telefone}" required="true" label="Telefone"/>
-
-
-					<h:outputLabel value="CPF:" />
-					<p:inputMask mask="999.999.999-99" value="#{pessoaBean.pessoa.cpf}"/>
-						
-					<h:outputLabel value="Rua:" />
-					<p:inputText style="width:240px;" value="#{pessoaBean.pessoa.rua}" required="true" maxlength="230" label="Rua"/>
-					
-					<h:outputLabel value="Bairro:" />
-					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.bairro}" required="true" maxlength="230" label="Bairro"/>
-					
-					<h:outputLabel value="Nºda Casa" />
-					<p:inputText style="width:190px;" value="#{pessoaBean.pessoa.ncasa}" required="true" maxlength="10" label="Nº da casa"/>
-
-					<h:outputLabel value="Estado:" />
-					<p:selectOneMenu value="#{pessoaBean.estado}" converter="conversorCombo" required="true" label="Estado">
-						<f:selectItems value="#{pessoaBean.estadosSI}"/>
-						<p:ajax event="change" listener="#{pessoaBean.carregarCidades(pessoaBean.estado)}" update="selectCidade"/>
-					</p:selectOneMenu>
-					
-					<h:outputLabel value="Cidade:"/>
-					<p:selectOneMenu value="#{pessoaBean.pessoa.cidade}" id="selectCidade"  converter="conversorCombo" required="true" label="Cidade">
-						<f:selectItems value="#{pessoaBean.cidadesSI}"/>
-					</p:selectOneMenu>
-					
-					<h:outputLabel value="Tipo de Cadastro:"/>
-					<p:selectOneMenu value="#{pessoaBean.pessoa.tipoPessoa}" converter="conversorCombo" required="true">
-						<f:selectItem itemValue="C" itemLabel="Cliente"/>
-						<f:selectItem itemValue="V" itemLabel="Vendedor"/>
-					</p:selectOneMenu>
-					
-				</h:panelGrid>
+				<p:panelGrid>
+					<p:row>
+						<p:column><h:outputLabel value="Nome:" /></p:column>
+						<p:column><p:inputText style="width:240px;" value="#{pessoaBean.pessoa.nome}" required="true" maxlength="100" label="Nome"/></p:column>
+						<p:column><h:outputLabel value="Apelido:" /></p:column>
+						<p:column><p:inputText style="width:190px;" value="#{pessoaBean.pessoa.apelido}" maxlength="100"/></p:column>
+						<p:column><h:outputLabel value="CPF:" /></p:column>
+						<p:column><p:inputMask mask="999.999.999-99" value="#{pessoaBean.pessoa.cpf}"/></p:column>
+						<p:column><h:outputLabel value="Telefone:" /></p:column>
+						<p:column width="20" styleClass="test"><p:inputMask mask="#{pessoaBean.mascaraTelefone}" style="width:160px;" value="#{pessoaBean.pessoa.telefone}" required="true" label="Telefone" id="tel"/></p:column>
+						<p:column>
+							<p:selectOneMenu var="tipoTelefone" value="#{pessoaBean.tipoTelefone}">
+							<f:selectItem itemLabel="Celular" itemValue="C"/>
+							<f:selectItem itemLabel="Fixo" itemValue="F"/>
+							<p:ajax event="change" listener="#{pessoaBean.alterarTipoCelular(pessoaBean.tipoTelefone)}" update="tel"/>
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column><h:outputLabel value="Rua:" /></p:column>
+						<p:column><p:inputText style="width:240px;" value="#{pessoaBean.pessoa.rua}" required="true" maxlength="230" label="Rua"/></p:column>
+						<p:column><h:outputLabel value="Bairro:" /></p:column>
+						<p:column><p:inputText style="width:190px;" value="#{pessoaBean.pessoa.bairro}" required="true" maxlength="230" label="Bairro"/></p:column>
+						<p:column><h:outputLabel value="Nºda Casa" /></p:column>
+						<p:column><p:inputText style="width:190px;" value="#{pessoaBean.pessoa.ncasa}" required="true" maxlength="10" label="Nº da casa"/></p:column>
+					</p:row>
+					<p:row>
+						<p:column><h:outputLabel value="Estado:" /></p:column>
+						<p:column>
+							<p:selectOneMenu value="#{pessoaBean.estado}" converter="conversorCombo" required="true" label="Estado">
+								<f:selectItems value="#{pessoaBean.estadosSI}"/>
+								<p:ajax event="change" listener="#{pessoaBean.carregarCidades(pessoaBean.estado)}" update="selectCidade"/>
+							</p:selectOneMenu>
+						</p:column>
+						<p:column><h:outputLabel value="Cidade:"/></p:column>
+						<p:column>
+							<p:selectOneMenu value="#{pessoaBean.pessoa.cidade}" id="selectCidade"  converter="conversorCombo" required="true" label="Cidade">
+							<f:selectItems value="#{pessoaBean.cidadesSI}"/>
+						</p:selectOneMenu>
+					</p:column>
+						<p:column><h:outputLabel value="Cadastro"/></p:column>
+						<p:column>
+							<p:selectOneMenu value="#{pessoaBean.pessoa.tipoPessoa}" converter="conversorCombo" required="true">
+								<f:selectItem itemValue="C" itemLabel="Cliente"/>
+								<f:selectItem itemValue="V" itemLabel="Vendedor"/>
+							</p:selectOneMenu>
+					</p:column>
+					</p:row>
+				</p:panelGrid>
 					<p:commandButton action="#{pessoaBean.cadastrar(pessoaBean.pessoa)}" ajax="true" icon="ui-icon-check" value="Salvar" update="msgs" style="float:right"/>
 			</p:fieldset>
 		</h:form>

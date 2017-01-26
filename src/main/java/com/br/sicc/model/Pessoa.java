@@ -26,7 +26,7 @@ public class Pessoa {
 	private String nome;
 	@Column(name="APELIDO")
 	private String apelido;
-	@Column(name="TELEFONE")
+	@Column(name="TELEFONE_CELULAR")
 	private String telefone;
 	@Column(name="CPF", nullable=true)
 	private String cpf;
@@ -46,7 +46,7 @@ public class Pessoa {
 	private Cidade cidade;
 	@Column(name="TIPO_CADASTRO")
 	private String tipoCadastro;
-	
+
 	public Integer getCodigo() {
 		return codigo;
 	}

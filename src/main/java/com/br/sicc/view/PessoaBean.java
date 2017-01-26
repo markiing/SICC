@@ -33,7 +33,8 @@ public class PessoaBean implements Serializable {
 	private List<Pessoa> listPessoasFiltradas = new ArrayList<>();
 	private Pessoa pessoa;
 	private Estado estado;
-	
+	private String mascaraTelefone = "(99)99999-9999";
+	private String tipoTelefone = "C";
 	
 	@PostConstruct
 	public void init(){
@@ -54,6 +55,7 @@ public class PessoaBean implements Serializable {
 	
 	public void carregarCidades(Estado e){
 		try{
+			if(cidadesSI.size()>0) cidadesSI.clear();
 			listCidade = facade.get(EnderecoBO.class).listarCidade(e);
 			for(Cidade c: listCidade){
 				cidadesSI.add(new SelectItem(c, c.getCidade()));
@@ -84,6 +86,14 @@ public class PessoaBean implements Serializable {
 		}catch(Exception ex){
 			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar, tente novamente mais tarde");
 			p = new Pessoa();
+		}
+	}
+	
+	public void alterarTipoCelular(String tipo){
+		if(tipo.equals("C")){
+			this.mascaraTelefone = "(99)99999-9999";
+		}else{
+			this.mascaraTelefone = "(99)9999-9999";
 		}
 	}
 	
@@ -149,8 +159,21 @@ public class PessoaBean implements Serializable {
 	public List<Pessoa> getListPessoasFiltradas() {
 		return listPessoasFiltradas;
 	}
+	public void setMascaraTelefone(String mascaraTelefone) {
+		this.mascaraTelefone = mascaraTelefone;
+	}
 	
+	public String getMascaraTelefone() {
+		return mascaraTelefone;
+	}
 	
+	public void setTipoTelefone(String tipoTelefone) {
+		this.tipoTelefone = tipoTelefone;
+	}
+	
+	public String getTipoTelefone() {
+		return tipoTelefone;
+	}
 	
 }
 
