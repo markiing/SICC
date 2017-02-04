@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/paginas/template_master/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">
+		Gerenciar Produtos
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+			<p:messages id="msgs" severity="error" />
+			<p:fieldset legend="Cadastrar Produto">
+				<h:panelGrid columns="4" cellpadding="5" id="panel">
+					<h:outputLabel value="Tipo do Produto:" />
+					<p:selectOneMenu value="#{produtoBean.produto.tipo}"
+						converter="conversorCombo">
+						<f:selectItems value="#{produtoBean.tipoProdutoSI}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Descrição do Produto" />
+					<p:inputText value="#{produtoBean.produto.descricao}"
+						label="Descrição do Produto" size="100" />
+
+					<h:outputLabel value="Vl. Unit." />
+					<p:inputNumber id="input2" value="#{produtoBean.produto.valor}" size="9"
+						label="Valor Unitário" symbol="R$" symbolPosition="s"
+						decimalSeparator=","
+						thousandSeparator="." />
+
+					<h:outputLabel value="Quantidade Disponível" />
+					<p:inputText label="Qtd. Disp." size="10"
+						value="#{produtoBean.produto.qtdDisponivel}" />
+				</h:panelGrid>
+				<p:commandButton
+					action="#{produtoBean.cadastrar(produtoBean.produto)}" ajax="true"
+					icon="ui-icon-check" value="Salvar" update="msgs prd"
+					style="float:right" />
+			</p:fieldset>
+			<p:spacer height="10" />
+			<div class="table" style="overflow: scroll; height: 350px;">
+			<p:dataTable var="prod" value="#{produtoBean.produtosCadastrados}" rowStyleClass="#{prod.qtdDisponivel >=4 ?'':'search-products-data-table-alert'}"
+				rowIndexVar="var" id="prd" editable="true">
+				<f:facet name="header">
+					Produtos Cadastrados
+				</f:facet>
+				<p:ajax event="rowEdit" listener="#{produtoBean.atualizarProduto}" />
+				<p:column width="30">
+					<h:outputText value="#{var+1}" />
+				</p:column>
+				<p:column headerText="Tipo" width="200"
+					sortBy="#{prod.tipo.descricao}">
+					<h:outputText value="#{prod.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Descrição" sortBy="#{prod.descricao}">
+					<h:outputText value="#{prod.descricao}" />
+				</p:column>
+				<p:column headerText="Qtd." width="70"
+					sortBy="#{prod.qtdDisponivel}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{prod.qtdDisponivel}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{prod.qtdDisponivel}"></p:inputText>
+						</f:facet>
+					</p:cellEditor>
+
+				</p:column>
+				<p:column headerText="Vl. Unit." width="130" sortBy="#{prod.valor}">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{prod.valor}">
+								<f:convertNumber currencySymbol="R$" type="currency" />
+							</h:outputText>
+						</f:facet>
+						<f:facet name="input">
+							<p:inputNumber value="#{prod.valor}"
+								label="Valor Unitário" symbol="R$" symbolPosition="s"
+								styleClass="inputNumber" decimalSeparator=","
+								thousandSeparator="." />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

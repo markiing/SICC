@@ -3,3 +3,21 @@
 .search-people-data-table-inactive{
 	  background-color:rgba(0,0,0,.3)
 }
+
+.search-products-data-table-alert{
+	color:white;
+	font-weight:bolder;
+	background-color:rgb(204, 38, 41);
+}
+#j_idt42:input2_input{
+	width:130px;
+}
+
+#input2{
+	width:130px;
+}
+
+
+.inputNumber{
+	width:130px;
+}

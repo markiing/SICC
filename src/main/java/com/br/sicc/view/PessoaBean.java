@@ -17,6 +17,7 @@ import com.br.sicc.facade.GenericFacade;
 import com.br.sicc.model.Cidade;
 import com.br.sicc.model.Estado;
 import com.br.sicc.model.Pessoa;
+import com.br.sicc.util.FeedbackUtils;
 import com.br.sicc.util.SICCUtil;
 
 @ManagedBean
@@ -33,8 +34,9 @@ public class PessoaBean implements Serializable {
 	private List<Pessoa> listPessoasFiltradas = new ArrayList<>();
 	private Pessoa pessoa;
 	private Estado estado;
-	private String mascaraTelefone = "(99)99999-9999";
 	private String tipoTelefone = "C";
+	private static final Integer LENGHT_CHARACTER_FIXPHONE = 13;
+	private static String PHONE_MASK = "(99)99999-9999";
 	
 	@PostConstruct
 	public void init(){
@@ -69,12 +71,12 @@ public class PessoaBean implements Serializable {
 		try {
 			if(facade.get(PessoaBO.class).recuperarPessoa(p) == null){
 				facade.get(PessoaBO.class).salvar(p);
-				SICCUtil.exibirMensagem(FacesMessage.SEVERITY_INFO, "Inserido com sucesso !");
+				SICCUtil.exibirMensagem(FacesMessage.SEVERITY_INFO, FeedbackUtils.INSERT_SUCCESSFULLY);
 			}else{
-				SICCUtil.exibirMensagem(FacesMessage.SEVERITY_WARN, "Aparentemente você está tentando inserir uma pessoa que já existe na nossa base !");
+				SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, FeedbackUtils.INSERT_FAILED_EXISTING_REGISTER);
 			}
 		} catch (Exception e) {
-			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, "Erro ao inserir, tente novamente mais tarde");
+			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, FeedbackUtils.GENERIC_INSERT_ERROR);
 		}
 		pessoa = new Pessoa();
 	}
@@ -82,23 +84,27 @@ public class PessoaBean implements Serializable {
 	public void atualizarDados(Pessoa p){
 		try{
 			facade.get(PessoaBO.class).atualizar(p);
-			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_INFO, "Atualizado com sucesso !");
+			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_INFO, FeedbackUtils.UPDATE_SUCCESSFULLY);
 		}catch(Exception ex){
-			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, "Erro ao atualizar, tente novamente mais tarde");
+			SICCUtil.exibirMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage().toUpperCase());
 			p = new Pessoa();
 		}
 	}
 	
 	public void alterarTipoCelular(String tipo){
 		if(tipo.equals("C")){
-			this.mascaraTelefone = "(99)99999-9999";
+			this.PHONE_MASK = "(99)99999-9999";
 		}else{
-			this.mascaraTelefone = "(99)9999-9999";
+			this.PHONE_MASK = "(99)9999-9999";
 		}
 	}
 	
 	public void confPessoa(Pessoa p){
 		this.pessoa = p;
+		pessoa.setTelefone(new String());
+		if(p.getTelefone().length() == LENGHT_CHARACTER_FIXPHONE){
+			this.PHONE_MASK = "(99)9999-9999";
+		}
 	}
 	
 
@@ -159,12 +165,12 @@ public class PessoaBean implements Serializable {
 	public List<Pessoa> getListPessoasFiltradas() {
 		return listPessoasFiltradas;
 	}
-	public void setMascaraTelefone(String mascaraTelefone) {
-		this.mascaraTelefone = mascaraTelefone;
+	public void setMascaraTelefone(String PHONE_MASK) {
+		PessoaBean.PHONE_MASK = PHONE_MASK;
 	}
 	
 	public String getMascaraTelefone() {
-		return mascaraTelefone;
+		return PHONE_MASK;
 	}
 	
 	public void setTipoTelefone(String tipoTelefone) {

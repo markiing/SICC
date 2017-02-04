@@ -13,9 +13,19 @@
         <view-id value="/paginas/cadastro/cadastrarPessoa.xhtml" />
     </url-mapping>
     
-      <url-mapping id="editarCadastro" >
+     <url-mapping id="editarCadastro" >
         <pattern value="/editar/pessoa" />
         <view-id value="/paginas/editar/editarCadastroPessoa.xhtml" />
+    </url-mapping>
+    
+     <url-mapping id="gerenciarProdutos" >
+        <pattern value="/gerenciar/produto" />
+        <view-id value="/paginas/gerencia/gerenciarProdutos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="repasseDeProdutos" >
+        <pattern value="/repasse" />
+        <view-id value="/paginas/gerencia/repasseDeProdutos.xhtml" />
     </url-mapping>
  
 </pretty-config>

@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource(value={"classpath:hibernate_dev.properties"})
 public class HibernateConfiguration {
 
-	
 	@Autowired
 	private Environment environment;
 	

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.sicc.model.Pessoa;
+import com.br.sicc.util.ParamsUtil;
 
 @Repository
 @Transactional
@@ -30,13 +31,24 @@ public class PessoaDAOImpl extends AbstractDAO<Integer, Pessoa> implements
 
 	@Override
 	public Pessoa recuperarPessoa(Pessoa p) throws Exception {
-		return (Pessoa)createEntityCriteria().add(Restrictions.eq("nome", p.getNome()))
-		.add(Restrictions.eq("telefone", p.getTelefone())).uniqueResult();
-		
+		return (Pessoa) createEntityCriteria()
+				.add(Restrictions.eq("nome", p.getNome()))
+				.add(Restrictions.eq("telefone", p.getTelefone()))
+				.uniqueResult();
+
 	}
 
 	@Override
 	public void chavearStatus(Pessoa p) throws Exception {
 		update(p);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoa> recuperarVendedores() throws Exception {
+		return (List<Pessoa>) createEntityCriteria()
+				.add(Restrictions.eq("tipoCadastro", ParamsUtil.VENDOR_TYPE))
+				.add(Restrictions.eq("ativo", true))
+				.list();
 	}
 }

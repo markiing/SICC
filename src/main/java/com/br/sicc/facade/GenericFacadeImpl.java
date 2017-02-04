@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-@Transactional(propagation = Propagation.REQUIRED)
 @Component
 public class GenericFacadeImpl implements GenericFacade {
 

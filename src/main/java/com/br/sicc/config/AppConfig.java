@@ -12,6 +12,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.br.sicc.business.ProdutoBO;
+import com.br.sicc.business.ProdutoBOImpl;
+import com.br.sicc.facade.GenericFacade;
+import com.br.sicc.facade.GenericFacadeImpl;
+
 
 /*
  * Classe de configuração do Spring MVC, que substitui 95% dos xml de configurações

@@ -10,4 +10,5 @@ public interface PessoaBO {
 	void chavearStatus(Pessoa p) throws Exception;
 	Pessoa recuperarPessoa(Pessoa p) throws Exception;
 	List<Pessoa> recuperarPessoas() throws Exception;
+	List<Pessoa> recuperarVendedores() throws Exception;
 }

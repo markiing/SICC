@@ -28,8 +28,8 @@
 						<p:column width="20" styleClass="test"><p:inputMask mask="#{pessoaBean.mascaraTelefone}" style="width:160px;" value="#{pessoaBean.pessoa.telefone}" required="true" label="Telefone" id="tel"/></p:column>
 						<p:column>
 							<p:selectOneMenu var="tipoTelefone" value="#{pessoaBean.tipoTelefone}">
-							<f:selectItem itemLabel="Celular" itemValue="C"/>
-							<f:selectItem itemLabel="Fixo" itemValue="F"/>
+							<f:selectItem itemLabel="Celular" itemValue="#{paramsUtil.cellphoneValue}"/>
+							<f:selectItem itemLabel="Fixo" itemValue="#{paramsUtil.fixphoneValue}"/>
 							<p:ajax event="change" listener="#{pessoaBean.alterarTipoCelular(pessoaBean.tipoTelefone)}" update="tel"/>
 							</p:selectOneMenu>
 						</p:column>
@@ -59,8 +59,8 @@
 						<p:column><h:outputLabel value="Cadastro"/></p:column>
 						<p:column>
 							<p:selectOneMenu value="#{pessoaBean.pessoa.tipoPessoa}" converter="conversorCombo" required="true">
-								<f:selectItem itemValue="C" itemLabel="Cliente"/>
-								<f:selectItem itemValue="V" itemLabel="Vendedor"/>
+								<f:selectItem itemValue="#{paramsUtil.CLIENT_TYPE}" itemLabel="Cliente"/>
+								<f:selectItem itemValue="#{paramsUtil.VENDOR_TYPE}" itemLabel="Vendedor"/>
 							</p:selectOneMenu>
 					</p:column>
 					</p:row>

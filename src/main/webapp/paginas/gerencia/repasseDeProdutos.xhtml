@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/paginas/template_master/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">
+		Repasse de Produtos
+	</ui:define>
+	<ui:define name="content">
+		<h:form>
+			<p:fieldset legend="Buscar Vendedor">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<h:outputText value="Código:" />
+						</p:column>
+						<p:column>
+							<p:inputText disabled="true" value="#{repasseBean.pessoa.codigo}"
+								size="5" />
+						</p:column>
+						<p:column>
+							<h:outputText value="Nome:" />
+						</p:column>
+						<p:column>
+							<p:inputText disabled="true" value="#{repasseBean.pessoa.nome}"
+								size="90" />
+						</p:column>
+						<p:column>
+							<p:commandButton action="#{repasseBean.recuperarVendedores()}"
+								oncomplete="PF('wdgVendedores').show()" update="tabelaVendedor"
+								icon="ui-icon-search" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:spacer height="20" />
+			<p:panel header="Produtos em posse do(a) #{repasseBean.pessoa.nome}">
+				<!-- rendered="#{repasseBean.pessoa.nome != null} -->
+				<p:commandButton value="Nova Repasse" icon="ui-icon-plus"
+					type="button" onclick="PF('wdgRepasse').show()" />
+				<p:spacer height="10" />
+				<br />
+				<p:dataTable value="#{repasseBean.listProdutosRepassados}"
+					var="produto">
+					<p:column headerText="Produto">
+						<h:outputText value="#{produto.produto.descricao}" />
+					</p:column>
+				</p:dataTable>
+
+				<div class="footerPanelVendor" style="margin-left: 76%">
+					<p:separator />
+					<p>
+						<b>Valor máximo em produtos:
+							#{repasseBean.totalValorProdutoRepassado}</b>
+					</p>
+				</div>
+
+			</p:panel>
+
+			<p:dialog header="Vendedores Cadastrados" widgetVar="wdgVendedores"
+				modal="true" height="600" width="900" id="tabelaVendedor">
+				<p:dataTable value="#{repasseBean.listPessoas}" var="vendedor"
+					selectionMode="single" selection="#{repasseBean.pessoa}"
+					filteredValue="#{repasseBean.pessoasFiltradas}"
+					rowKey="#{vendedor.cpf}">
+					<f:facet name="header">Vendedores Cadastrados</f:facet>
+					<p:ajax event="rowDblselect"
+						listener="#{repasseBean.confVendedor(repasseBean.pessoa)}"
+						update="@form" oncomplete="PF('wdgVendedores').hide()" />
+					<p:column headerText="CPF" filterBy="#{vendedor.cpf}">
+						<h:outputText value="#{vendedor.cpf}" />
+					</p:column>
+					<p:column headerText="Nome" filterBy="#{vendedor.nome}">
+						<h:outputText value="#{vendedor.nome}" />
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+
+			<p:dialog header="Novo Repasse" widgetVar="wdgRepasse" modal="true"
+				height="600" width="900" id="tabelaRepasse">
+				<p:fieldset legend="Informações do Produto">
+					<p:inputText disabled="true" size="4" placeholder="Codigo" />
+					<p:spacer width="30" />
+					<p:selectOneMenu id="advanced" value="#{produtoBean.produto}"
+						converter="conversorCombo" panelStyle="width:180px" effect="fade"
+						var="prod" style="width:160px" filter="true"
+						filterMatchMode="startsWith">
+						
+						<f:selectItems value="#{produtoBean.produtosSI}" 
+							var="produtos" itemLabel="#{produtos.descricao}" itemValue="#{produtos}" />
+						<p:ajax event="change" listener="#{produtoBean.recuperarInformacoesDoProduto(produtoBean.produto)}"/>
+						
+						<p:column style="width:10%">
+							<h:outputText value="#{prod.descricao}"/>
+						</p:column>
+
+					</p:selectOneMenu>
+				</p:fieldset>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
